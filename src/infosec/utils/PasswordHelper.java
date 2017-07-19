@@ -27,7 +27,6 @@ public class PasswordHelper {
 				
 		String pwd_plaintext = "123456";
 		
-		//String encoded_password = PasswordHelper.getSaltedSHAPassword(pwd_plaintext, null);
 		String encoded_password = PasswordHelper.getBCryptPassword(pwd_plaintext);
 		
 		System.out.println(encoded_password);

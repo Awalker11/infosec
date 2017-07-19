@@ -16,28 +16,31 @@
 
 	<!-- 学习spring security，实现具有角色的访问控制，并在这里实现配置 -->
 	<security:http security="none" pattern="/index.jsp" />
-   <security:http security="none" pattern="/login.jsp" />
-   <security:http auto-config="true">
-      <security:form-login login-page="/login.jsp"
-         login-processing-url="/login.do" 
-          
-         username-parameter="username"
-         password-parameter="password" />
-         <security:logout logout-url="/logout"/>
-         <security:intercept-url pattern="/users" access="ROLE_ADMIN" />
-         <security:intercept-url pattern="/**" access="ROLE_USER,ROLE_ADMIN" />
-   </security:http>
+   	<security:http security="none" pattern="/login.jsp" />
+   	<security:http auto-config="true">
+    	<security:form-login login-page="/login.jsp"
+        	login-processing-url="/login.do" 
+         	username-parameter="username"
+         	password-parameter="password" />
+        <security:logout logout-url="/logout"/>
+        <security:intercept-url pattern="/users" access="ROLE_ADMIN" />
+        <security:intercept-url pattern="/**" access="ROLE_USER,ROLE_ADMIN" />
+   	</security:http>
     
     
    <security:authentication-manager alias="authenticationManager">
-            <security:authentication-provider>
-         <security:jdbc-user-service
-            data-source-ref="dataSource"
-            users-by-username-query="select username, password, enabled from user where username = ?" 
-            authorities-by-username-query="select username, rolecode from user where username = ?"/>
-            
-      </security:authentication-provider>
+   		<security:authentication-provider>
+            <password-encoder ref="encoder" />
+         	<security:jdbc-user-service
+	            data-source-ref="dataSource"
+	            users-by-username-query="select username, password, enabled from user where username = ?" 
+	            authorities-by-username-query="select username, rolecode from user where username = ?"/>
+      	</security:authentication-provider>
    </security:authentication-manager>
+   
+   <beans:bean id="encoder"
+		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+  	</beans:bean>
    
 
 </beans:beans>
